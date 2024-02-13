@@ -6,6 +6,7 @@ require (
 	cloud.google.com/go/profiler v0.4.0
 	github.com/golang/protobuf v1.5.3
 	github.com/pkg/errors v0.9.1
+	github.com/shopspring/decimal v1.3.1
 	github.com/sirupsen/logrus v1.9.3
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.48.0
 	go.opentelemetry.io/otel v1.23.1
@@ -45,3 +46,5 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240102182953-50ed04b92917 // indirect
 	google.golang.org/protobuf v1.32.0 // indirect
 )
+
+replace github.com/GoogleCloudPlatform/microservices-demo/src/productcatalogservice/genproto => ./genproto

@@ -20,6 +20,7 @@ import (
 	"time"
 
 	pb "github.com/GoogleCloudPlatform/microservices-demo/src/productcatalogservice/genproto"
+	"github.com/shopspring/decimal"
 	"google.golang.org/grpc/codes"
 	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/status"
@@ -27,6 +28,39 @@ import (
 
 type productCatalog struct {
 	catalog pb.ListProductsResponse
+}
+
+type contentAPIPrice struct {
+	Value    string
+	Currency string
+}
+
+type contentAPIProduct struct {
+	OfferId      string
+	Title        string
+	Description  string
+	ImageLink    string
+	Price        contentAPIPrice
+	ProductTypes []string
+}
+
+func (c *contentAPIProduct) String() string {
+	return "offerId:" + c.OfferId
+}
+
+type contentAPIListProductsResponse struct {
+	Resources []*contentAPIProduct
+}
+
+func (c *contentAPIListProductsResponse) String() string {
+	outputStr := "["
+	for i, p := range c.Resources {
+		outputStr = outputStr + p.String()
+		if i != len(c.Resources)-1 {
+			outputStr = outputStr + ","
+		}
+	}
+	return outputStr + "]"
 }
 
 func (p *productCatalog) Check(ctx context.Context, req *healthpb.HealthCheckRequest) (*healthpb.HealthCheckResponse, error) {
@@ -75,11 +109,33 @@ func (p *productCatalog) SearchProducts(ctx context.Context, req *pb.SearchProdu
 
 func (p *productCatalog) parseCatalog() []*pb.Product {
 	if reloadCatalog || len(p.catalog.Products) == 0 {
-		err := readCatalogFile(&p.catalog)
+		err := readProductsAPI(&p.catalog)
 		if err != nil {
 			return []*pb.Product{}
 		}
 	}
 
 	return p.catalog.Products
+}
+
+func convertFromContentAPIProduct(cp *contentAPIProduct) *pb.Product {
+	returnProduct := &pb.Product{
+		Id:          cp.OfferId,
+		Name:        cp.Title,
+		Description: cp.Description,
+		Picture:     cp.ImageLink,
+	}
+	priceDecimal, err := decimal.NewFromString(cp.Price.Value)
+	if err != nil {
+		log.Errorf("fail to create decimal from string with value %v", cp.Price.Value)
+		return &pb.Product{}
+	}
+	returnProduct.PriceUsd = &pb.Money{
+		Units: priceDecimal.IntPart(),
+		Nanos: int32(priceDecimal.Sub(decimal.NewFromInt(priceDecimal.IntPart())).
+			Mul(decimal.NewFromInt(1000_000_000)).IntPart()),
+		CurrencyCode: cp.Price.Currency,
+	}
+
+	return returnProduct
 }

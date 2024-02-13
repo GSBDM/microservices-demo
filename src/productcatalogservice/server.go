@@ -15,11 +15,14 @@
 package main
 
 import (
-	"bytes"
 	"context"
+	"encoding/json"
 	"flag"
 	"fmt"
+	"io"
 	"net"
+	"net/http"
+	"net/url"
 	"os"
 	"os/signal"
 	"sync"
@@ -31,7 +34,6 @@ import (
 	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 
 	"cloud.google.com/go/profiler"
-	"github.com/golang/protobuf/jsonpb"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
@@ -137,7 +139,7 @@ func run(port string) string {
 		grpc.StreamInterceptor(otelgrpc.StreamServerInterceptor()))
 
 	svc := &productCatalog{}
-	err = readCatalogFile(&svc.catalog)
+	err = readProductsAPI(&svc.catalog)
 	if err != nil {
 		log.Warnf("could not parse product catalog")
 	}
@@ -218,21 +220,64 @@ func mustConnGRPC(ctx context.Context, conn **grpc.ClientConn, addr string) {
 	}
 }
 
-func readCatalogFile(catalog *pb.ListProductsResponse) error {
+func readProductsAPI(catalog *pb.ListProductsResponse) error {
 	catalogMutex.Lock()
 	defer catalogMutex.Unlock()
 
-	catalogJSON, err := os.ReadFile("products.json")
+	// Got to Google OAuth playground https://developers.google.com/oauthplayground/
+	// Use "https://www.googleapis.com/auth/content" as the scope
+	// Follow the 3 steps to get acess token
+	// Paste the access token below:
+	const acessToken = "ya29.a0AfB_byC_rW25qItZucEIqx0y1Fv3RmBFuEj5LZMSeV_996Jkyje_Ac0n3JWBBq3MUVCdGUAffDifbzyT71BUV-Hs3gOoWOq1fOvW27v6VeqKma6cpycK8hJ-9fTc7Smp_Z1OI7AHD42mFdF0FAWBm-OTmZwHzqRXeqYlaCgYKAQ4SAQ8SFQHGX2MipkSJvrhNwjSuGAPVgzTHbg0171"
+
+	const mcid = "11609541" //"5308394841"
+
+	listProductsURL := url.URL{
+		Scheme: "https",
+		Host:   "shoppingcontent.googleapis.com",
+		Path:   fmt.Sprintf("content/v2.1/%s/products", mcid),
+	}
+	params := listProductsURL.Query()
+	// maxResults control how many product we get in one page.
+	params.Add("maxResults", "20")
+	listProductsURL.RawQuery = params.Encode()
+	log.Infof("listProductsURL: %s", listProductsURL.String())
+
+	// Create a request
+	req, err := http.NewRequest("GET", listProductsURL.String(), nil)
 	if err != nil {
-		log.Fatalf("failed to open product catalog json file: %v", err)
-		return err
+		log.Fatal(err)
 	}
 
-	if err := jsonpb.Unmarshal(bytes.NewReader(catalogJSON), catalog); err != nil {
-		log.Warnf("failed to parse the catalog JSON: %v", err)
-		return err
-	}
+	// Customize the request (optional - add headers, etc.)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", acessToken))
 
-	log.Info("successfully parsed product catalog json")
+	// Use the default HTTP client to send the request
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(string(body))
+
+	listProductResp := &contentAPIListProductsResponse{}
+	err = json.Unmarshal(body, listProductResp)
+	if err != nil {
+		log.Fatalf("fail to unmarshal response due to error [%v]", err)
+	}
+	// log.Infof("contentAPIListProductsResponse.titles:[%v]", listProductResp)
+	products := catalog.Products
+	for _, cp := range listProductResp.Resources {
+		products = append(products, convertFromContentAPIProduct(cp))
+	}
+	catalog.Products = products
+	log.Infof("catalog:[%v]", catalog)
+	log.Info("successfully call Content API to get products")
 	return nil
 }
