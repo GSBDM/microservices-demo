@@ -244,7 +244,7 @@ footer.py-5 {
 
 footer .footer-top {
   padding: 60px 0px;
-  background-color: #570D2E;
+  background-color: #142537
   color: white;
 }
 
@@ -301,12 +301,12 @@ main {
 
 .home-mobile-hero-banner {
   height: 200px;
-  background: url(/static/images/folded-clothes-on-white-chair-wide.jpg) no-repeat top center;
+  background: url(/static/images/model.jpg) no-repeat top center;
   background-size: cover;
 }
 
 .home-desktop-left-image {
-  background: url(/static/images/folded-clothes-on-white-chair.jpg) no-repeat center;
+  background: url(/static/images/model.jpg) no-repeat center;
   background-size: cover;
 }
 
@@ -370,7 +370,7 @@ similar to that of the hot-products-row.
 .home-desktop-footer-row {
   padding-left: 9%;
   padding-right: 9%;
-  background-color: #570D2E;
+  background-color: #142537;
 }
 
 /* Ad */

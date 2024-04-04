@@ -39,7 +39,9 @@ func (fe *frontendServer) getCurrencies(ctx context.Context) ([]string, error) {
 			out = append(out, c)
 		}
 	}
-	return out, nil
+	var out2 []string
+	out2 = append(out2, "USD")
+	return out2, nil
 }
 
 func (fe *frontendServer) getProducts(ctx context.Context) ([]*pb.Product, error) {
