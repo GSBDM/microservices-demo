@@ -228,7 +228,7 @@ func readProductsAPI(catalog *pb.ListProductsResponse) error {
 	// Use "https://www.googleapis.com/auth/content" as the scope
 	// Follow the 3 steps to get acess token
 	// Paste the access token below:
-	const acessToken = "ya29.a0Ad52N3_VoXgLAOiTkoQZ9aCUgZCI9ti9Xc5_QUlt8PXAwyiHPz49YMyhgNdueUlbFV45i93QYXid3y81iw0deaV2iS8Z_E-oVzHKMJC6hLRGHxID0PT3qE5kPotmQ2X9tuyL8TV3mZ1mFUWZBgv2icfv-1t7kEkNPm5LaCgYKASkSAQ8SFQHGX2MiXpGpu19TiQ-2-5miXRudYA0171"
+	const acessToken = "ya29.a0Ad52N3_UC6jXrzsI7bG_2Mwc7F9lMjV0NOuX-h7ipULaI0s_koZaOBzMfReYYMhyvAtb2rdyezNCRb_eAZHHr8iqFd6ANm9LE7NL-GCMVLON1coo13jxp2o04IOqMfvadOH4WRi9cv8gbXL30Fr1OBj8EYUIHHtq66-WaCgYKAdMSAQ8SFQHGX2MintOjTCgAZW0mWOe-ipnI9w0171"
 
 	const mcid = "616294315" //"5308394841"
 

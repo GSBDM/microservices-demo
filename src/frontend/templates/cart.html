@@ -87,12 +87,17 @@
 
         <div class="row cart-summary-shipping-row">
           <div class="col pl-md-0">Pick Up time selected</div>
-          <div class="col pr-md-0 text-right">Friday 10:30 am</div>
+          <div class="col pr-md-0 text-right">Friday 1300 - 1700</div>
+        </div>
+
+        <div class="row cart-summary-shipping-row">
+          <div class="col pl-md-0">Tax</div>
+          <div class="col pr-md-0 text-right">$8.99</div>
         </div>
 
         <div class="row cart-summary-total-row">
           <div class="col pl-md-0">Total</div>
-          <div class="col pr-md-0 text-right">{{ renderMoney .total_cost }}</div>
+          <div class="col pr-md-0 text-right">{{ renderMoney .total_cost}}</div>
         </div>
 
         <div class="row cart-summary-total-row">
@@ -104,8 +109,9 @@
             </div>
           </div>
           <div class="col pr-md-0 text-right">
-            <div class="form-row" style="border-top: solid 1px rgba(154, 160, 166, 0.5);
+            <div class="form-row" style="
                               height:280px;
+                              font-size:15px;
                               margin-top: 20px;
                               padding-top: 24px;">
               <table class="opening-hours-table">
@@ -172,37 +178,170 @@
                               margin-top: 20px;
                               padding-bottom: 24px;
                               padding-top: 24px;">
-            <div class="days">
-              <div class="day">
+            <div class="days" style="width: 1000px;">
+              <div class="day" style="width: 120px;
+                                height: 230px;
+                                background-color: #efeff6;
+                                padding:10px;
+                                float:left;
+                                margin-right:7px;
+                                margin-bottom:5px;">
                 <div class="datelabel">
                   <strong>Friday</strong>
                   <br/>August 23</div>
-                <div class="timeslot">9:00 - 13:00</div>
-                <div class="timeslot">13:00 - 1700</div>
-                <div class="timeslot">700 - 2100</div>
+                <div class="timeslot" style="background-color: #00c09d;
+                                            width: auto;
+                                            color: white;
+                                            height: 36px;
+                                            padding:7px;
+                                            margin-top: 5px;
+                                            font-size: 14px;
+                                            border-radius: 3px;
+                                            vertical-align: center;
+                                            text-align:center;">9:00 - 13:00</div>
+                <div class="timeslot" style="background-color: #2CA893;
+                                            width: auto;
+                                            color: white;
+                                            height: 36px;
+                                            padding:7px;
+                                            margin-top: 5px;
+                                            font-size: 14px;
+                                            border-radius: 3px;
+                                            vertical-align: center;
+                                            text-align:center;">13:00 - 17:00</div>
+                <div class="timeslot" style="background-color: #00c09d;
+                                            width: auto;
+                                            color: white;
+                                            height: 36px;
+                                            padding:7px;
+                                            margin-top: 5px;
+                                            font-size: 14px;
+                                            border-radius: 3px;
+                                            vertical-align: center;
+                                            text-align:center;">17:00 - 21:00</div>
               </div>
-              <div class="day">
+              <div class="day" style="width: 120px;
+                                height: 230px;
+                                background-color: #efeff6;
+                                padding:10px;
+                                float:left;
+                                margin-right:7px;
+                                margin-bottom:5px;">
                 <div class="datelabel"><strong>Saturday</strong><br/>August 24</div>
-                <div class="timeslot">1300-1700</div>
+                <div class="timeslot" style="background-color: #00c09d;
+                                            width: auto;
+                                            color: white;
+                                            height: 36px;
+                                            padding:7px;
+                                            margin-top: 5px;
+                                            font-size: 14px;
+                                            border-radius: 3px;
+                                            vertical-align: center;
+                                            text-align:center;">13:00-17:00</div>
               </div>
-              <div class="day">
-                <div class="datelabel"><strong>Sunday</strong><br/>August 25</div>
-                <div class="timeslot">9:00 - 13:00</div>
-                <div class="timeslot">13:00 - 1700</div>
-                <div class="timeslot">700 - 2100</div>
+              <div class="day" style="width: 120px;
+                                height: 230px;
+                                background-color: #efeff6;
+                                padding:10px;
+                                float:left;
+                                margin-right:7px;
+                                margin-bottom:5px;">
+                <div class="datelabel" style="margin-bottom: 15px;"><strong>Sunday</strong><br/>August 25</div>
+                <div class="timeslot" style="background-color: #00c09d;
+                                            width: auto;
+                                            color: white;
+                                            height: 36px;
+                                            padding:7px;
+                                            margin-top: 5px;
+                                            font-size: 14px;
+                                            border-radius: 3px;
+                                            vertical-align: center;
+                                            text-align:center;">9:00 - 13:00</div>
+                <div class="timeslot" style="background-color: #00c09d;
+                                            width: auto;
+                                            color: white;
+                                            height: 36px;
+                                            padding:7px;
+                                            margin-top: 5px;
+                                            font-size: 14px;
+                                            border-radius: 3px;
+                                            vertical-align: center;
+                                            text-align:center;">13:00 - 17:00</div>
+                <div class="timeslot" style="background-color: #00c09d;
+                                            width: auto;
+                                            color: white;
+                                            height: 36px;
+                                            padding:7px;
+                                            margin-top: 5px;
+                                            font-size: 14px;
+                                            border-radius: 3px;
+                                            vertical-align: center;
+                                            text-align:center;">17:00 - 21:00</div>
               </div>
-              <div class="day">
-                <div class="datelabel"><strong>Monday</strong><br/>August 26</div>
-                <div class="timeslot">9:00 - 13:00</div>
-                <div class="timeslot">700 - 2100</div>
+              <div class="day" style="width: 120px;
+                                height: 230px;
+                                background-color: #efeff6;
+                                padding:10px;
+                                float:left;
+                                margin-right:7px;
+                                margin-bottom:5px;">
+                <div class="datelabel" style="margin-bottom: 15px;"><strong>Monday</strong><br/>August 26</div>
+                <div class="timeslot" style="background-color: #00c09d;
+                                            width: auto;
+                                            color: white;
+                                            height: 36px;
+                                            padding:7px;
+                                            margin-top: 5px;
+                                            font-size: 14px;
+                                            border-radius: 3px;
+                                            vertical-align: center;
+                                            text-align:center;">9:00 - 13:00</div>
+                <div class="timeslot" style="background-color: #00c09d;
+                                            width: auto;
+                                            color: white;
+                                            height: 36px;
+                                            padding:7px;
+                                            margin-top: 5px;
+                                            font-size: 14px;
+                                            border-radius: 3px;
+                                            vertical-align: center;
+                                            text-align:center;">17:00 - 21:00</div>
               </div>
-              <div class="day">
-                <div class="datelabel"><strong>Monday</strong><br/>August 26</div>
-                <div class="timeslot">13:00 - 1700</div>
-                <div class="timeslot">700 - 2100</div>
+              <div class="day" style="width: 120px;
+                                height: 230px;
+                                background-color: #efeff6;
+                                padding:10px;
+                                float:left;
+                                margin-right:7px;
+                                margin-bottom:5px;">
+                <div class="datelabel" style="margin-bottom: 15px;"><strong>Monday</strong><br/>August 26</div>
+                <div class="timeslot" style="background-color: #00c09d;
+                                            width: auto;
+                                            color: white;
+                                            height: 36px;
+                                            padding:7px;
+                                            margin-top: 5px;
+                                            font-size: 14px;
+                                            border-radius: 3px;
+                                            vertical-align: center;
+                                            text-align:center;">13:00 - 17:00</div>
+                <div class="timeslot" style="background-color: #00c09d;
+                                            width: auto;
+                                            color: white;
+                                            height: 36px;
+                                            padding:7px;
+                                            margin-top: 5px;
+                                            font-size: 14px;
+                                            border-radius: 3px;
+                                            vertical-align: center;
+                                            text-align:center;">1700 - 21:00</div>
               </div>
             </div>
           </div>
+
+          <br/>
+          <br/>
+          <br/>
 
           <div class="row">
             <div class="col">
